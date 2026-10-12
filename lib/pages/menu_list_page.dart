@@ -1,11 +1,6 @@
 
 import 'package:flutter/material.dart';
-
 import '../main.dart';
-
-// ========================
-// MODEL MENU
-// ========================
 
 class MenuItem {
   final String id;
@@ -29,17 +24,10 @@ class MenuItem {
 
 class CartEntry {
   final MenuItem item;
-  final int quantity;
+  int quantity;
 
-  const CartEntry({
-    required this.item,
-    required this.quantity,
-  });
+  CartEntry({required this.item, this.quantity = 1});
 }
-
-// ========================
-// PENYIMPANAN KERANJANG
-// ========================
 
 class KantinStore extends ChangeNotifier {
   KantinStore._();
@@ -48,36 +36,20 @@ class KantinStore extends ChangeNotifier {
 
   final Map<String, CartEntry> cart = {};
 
-  int get itemCount {
-    return cart.values.fold(
-      0,
-      (total, entry) => total + entry.quantity,
-    );
-  }
+  int get itemCount =>
+      cart.values.fold(0, (total, entry) => total + entry.quantity);
 
-  int get subtotal {
-    return cart.values.fold(
-      0,
-      (total, entry) =>
-          total + (entry.item.price * entry.quantity),
-    );
-  }
+  int get subtotal => cart.values.fold(
+        0,
+        (total, entry) => total + entry.item.price * entry.quantity,
+      );
 
   void add(MenuItem item) {
-    final existing = cart[item.id];
-
-    if (existing != null) {
-      cart[item.id] = CartEntry(
-        item: item,
-        quantity: existing.quantity + 1,
-      );
+    if (cart.containsKey(item.id)) {
+      cart[item.id]!.quantity++;
     } else {
-      cart[item.id] = CartEntry(
-        item: item,
-        quantity: 1,
-      );
+      cart[item.id] = CartEntry(item: item);
     }
-
     notifyListeners();
   }
 
@@ -87,14 +59,8 @@ class KantinStore extends ChangeNotifier {
     if (quantity <= 0) {
       cart.remove(id);
     } else {
-      final existing = cart[id]!;
-
-      cart[id] = CartEntry(
-        item: existing.item,
-        quantity: quantity,
-      );
+      cart[id]!.quantity = quantity;
     }
-
     notifyListeners();
   }
 
@@ -109,250 +75,212 @@ class KantinStore extends ChangeNotifier {
   }
 }
 
-// ========================
-// DATA MENU KANTIN BU SARI
-// ========================
-
 const List<MenuItem> kantinMenus = [
-  // MAKANAN
-
   MenuItem(
-    id: 'nasi_goreng',
+    id: '1',
     name: 'Nasi Goreng Seafood',
     category: 'Makanan',
     price: 25000,
     description:
-        'Nasi goreng dengan perpaduan seafood dan bumbu khas yang gurih.',
+        'Nasi goreng gurih dengan udang, cumi, telur, dan sayuran segar.',
     imageAsset: 'assets/images/nasigoreng.jpeg',
-    tag: 'Favorit Kantin',
   ),
   MenuItem(
-    id: 'ayam_penyet',
+    id: '2',
     name: 'Ayam Penyet',
     category: 'Makanan',
-    price: 22000,
+    price: 20000,
     description:
-        'Ayam goreng dengan sambal penyet, lalapan, dan nasi hangat.',
+        'Ayam goreng empuk dengan sambal khas dan lalapan segar.',
     imageAsset: 'assets/images/ayampenyet.jpeg',
   ),
   MenuItem(
-    id: 'nasi_bakar',
+    id: '3',
     name: 'Nasi Bakar Cumi',
     category: 'Makanan',
-    price: 23000,
+    price: 22000,
     description:
-        'Nasi berbumbu yang dibungkus daun pisang dengan isian cumi.',
+        'Nasi berbumbu yang dibungkus daun pisang dan dibakar bersama cumi.',
     imageAsset: 'assets/images/nasibakar.jpeg',
   ),
   MenuItem(
-    id: 'soto_ayam',
+    id: '4',
     name: 'Soto Ayam',
     category: 'Makanan',
     price: 18000,
     description:
-        'Soto ayam berkuah hangat dengan rempah dan pelengkap pilihan.',
+        'Soto ayam hangat dengan kuah rempah, suwiran ayam, dan bawang goreng.',
     imageAsset: 'assets/images/soto.jpeg',
   ),
   MenuItem(
-    id: 'bakso',
+    id: '5',
     name: 'Bakso',
     category: 'Makanan',
-    price: 17000,
-    description:
-        'Bakso dengan kuah gurih, mi, dan pelengkap yang nikmat.',
+    price: 15000,
+    description: 'Bakso daging dengan kuah gurih, mi, dan pelengkap segar.',
     imageAsset: 'assets/images/bakso.jpeg',
   ),
   MenuItem(
-    id: 'kwetiau',
-    name: 'Kwetiau Telur',
+    id: '6',
+    name: 'Kwetiau Goreng',
     category: 'Makanan',
     price: 20000,
-    description:
-        'Kwetiau yang dimasak dengan telur dan bumbu pilihan.',
+    description: 'Kwetiau goreng dengan bumbu khas dan sayuran pilihan.',
     imageAsset: 'assets/images/Kwetiau.jpeg',
   ),
   MenuItem(
-    id: 'mie_ayam',
-    name: 'Mie Ayam',
+    id: '7',
+    name: 'Mi Ayam',
     category: 'Makanan',
     price: 16000,
-    description:
-        'Mi kenyal dengan topping ayam berbumbu dan sayuran.',
+    description: 'Mi kenyal dengan ayam berbumbu dan sayuran segar.',
     imageAsset: 'assets/images/mieayam.jpeg',
   ),
   MenuItem(
-    id: 'sate',
-    name: 'Sate',
+    id: '8',
+    name: 'Sate Ayam',
     category: 'Makanan',
     price: 22000,
-    description:
-        'Sate dengan bumbu kacang gurih dan pelengkap pilihan.',
+    description: 'Sate ayam panggang dengan bumbu kacang yang gurih.',
     imageAsset: 'assets/images/sate.jpeg',
   ),
-
-  // MINUMAN
-
   MenuItem(
-    id: 'es_teh',
+    id: '9',
     name: 'Es Teh Manis',
     category: 'Minuman',
     price: 5000,
-    description:
-        'Teh manis dingin yang menyegarkan untuk menemani makan.',
+    description: 'Teh manis dingin yang menyegarkan.',
     imageAsset: 'assets/images/estehmanis.jpeg',
   ),
   MenuItem(
-    id: 'es_jeruk',
+    id: '10',
     name: 'Es Jeruk',
     category: 'Minuman',
-    price: 8000,
-    description:
-        'Minuman jeruk dingin dengan rasa manis dan segar.',
+    price: 7000,
+    description: 'Minuman jeruk segar dengan rasa manis dan sedikit asam.',
     imageAsset: 'assets/images/esjeruk.jpeg',
   ),
   MenuItem(
-    id: 'matcha',
+    id: '11',
     name: 'Matcha Latte',
     category: 'Minuman',
-    price: 18000,
-    description:
-        'Perpaduan matcha dan susu dengan rasa lembut.',
+    price: 15000,
+    description: 'Perpaduan matcha dan susu dengan rasa lembut.',
     imageAsset: 'assets/images/matchalatte.jpeg',
   ),
   MenuItem(
-    id: 'kopi_susu',
-    name: 'Coffee Susu Gula Aren',
+    id: '12',
+    name: 'Kopi Gula Aren',
     category: 'Minuman',
-    price: 18000,
-    description:
-        'Kopi susu dengan manis khas gula aren.',
+    price: 15000,
+    description: 'Kopi susu dengan manis khas gula aren.',
     imageAsset: 'assets/images/coffegulren.jpeg',
   ),
   MenuItem(
-    id: 'thai_tea',
+    id: '13',
     name: 'Thai Tea',
     category: 'Minuman',
-    price: 15000,
-    description:
-        'Teh susu ala Thailand dengan rasa manis dan creamy.',
+    price: 12000,
+    description: 'Teh khas Thailand dengan campuran susu yang creamy.',
     imageAsset: 'assets/images/thaitea.jpeg',
   ),
   MenuItem(
-    id: 'jus_alpukat',
+    id: '14',
     name: 'Jus Alpukat',
     category: 'Minuman',
-    price: 15000,
-    description:
-        'Jus alpukat lembut yang dibuat untuk menemani waktu makan.',
+    price: 12000,
+    description: 'Jus alpukat lembut yang dibuat dari buah segar.',
     imageAsset: 'assets/images/jusalpukat.jpeg',
   ),
   MenuItem(
-    id: 'jus_mangga',
+    id: '15',
     name: 'Jus Mangga',
     category: 'Minuman',
-    price: 14000,
-    description:
-        'Jus mangga dengan rasa manis dan menyegarkan.',
+    price: 12000,
+    description: 'Jus mangga dengan rasa manis dan menyegarkan.',
     imageAsset: 'assets/images/jusmangga.jpeg',
   ),
   MenuItem(
-    id: 'air_putih',
+    id: '16',
     name: 'Air Putih',
     category: 'Minuman',
     price: 4000,
-    description:
-        'Air mineral untuk menemani aktivitas sehari-hari.',
+    description: 'Air mineral untuk menemani santapanmu.',
     imageAsset: 'assets/images/airputih.jpeg',
   ),
-
-  // CAMILAN
-
   MenuItem(
-    id: 'dimsum_mentai',
+    id: '17',
     name: 'Dimsum Mentai',
     category: 'Camilan',
     price: 18000,
-    description:
-        'Dimsum lembut dengan saus mentai yang gurih.',
+    description: 'Dimsum lembut dengan saus mentai yang gurih.',
     imageAsset: 'assets/images/dimsummentai.jpeg',
   ),
   MenuItem(
-    id: 'udang_keju',
+    id: '18',
     name: 'Udang Keju',
     category: 'Camilan',
-    price: 16000,
-    description:
-        'Camilan renyah dengan perpaduan udang dan keju.',
+    price: 15000,
+    description: 'Camilan renyah dengan isian udang dan keju.',
     imageAsset: 'assets/images/udangkeju.jpeg',
   ),
   MenuItem(
-    id: 'cheese_roll',
+    id: '19',
     name: 'Cheese Roll',
     category: 'Camilan',
     price: 12000,
-    description:
-        'Gulungan pastry renyah dengan isian keju.',
+    description: 'Gulungan pastry renyah dengan isian keju.',
     imageAsset: 'assets/images/Cheeseroll.jpeg',
   ),
   MenuItem(
-    id: 'cireng',
-    name: 'Cireng Ayam Suwir',
-    category: 'Camilan',
-    price: 12000,
-    description:
-        'Cireng renyah dengan isian ayam suwir berbumbu.',
-    imageAsset: 'assets/images/cirengjs.jpeg',
-  ),
-  MenuItem(
-    id: 'piscok',
-    name: 'Piscok Lumer',
+    id: '20',
+    name: 'Cireng',
     category: 'Camilan',
     price: 10000,
-    description:
-        'Pisang cokelat dengan isian cokelat yang lumer.',
-    imageAsset: 'assets/images/piscoklumer.jpeg',
+    description: 'Cireng renyah di luar dan kenyal di dalam.',
+    imageAsset: 'assets/images/cirengisi.jpeg',
   ),
   MenuItem(
-    id: 'pisang_goreng',
+    id: '21',
+    name: 'Pisang Cokelat',
+    category: 'Camilan',
+    price: 12000,
+    description: 'Pisang dengan cokelat lumer dalam balutan kulit renyah.',
+    imageAsset: 'assets/images/piscok.jpeg',
+  ),
+  MenuItem(
+    id: '22',
     name: 'Pisang Goreng',
     category: 'Camilan',
     price: 10000,
-    description:
-        'Pisang goreng dengan tekstur renyah di luar dan lembut di dalam.',
+    description: 'Pisang goreng hangat dengan tekstur renyah.',
     imageAsset: 'assets/images/pisgor.jpeg',
   ),
   MenuItem(
-    id: 'waffle',
+    id: '23',
     name: 'Waffle',
     category: 'Camilan',
     price: 15000,
-    description:
-        'Waffle hangat yang cocok untuk camilan sore.',
+    description: 'Waffle hangat dengan tekstur lembut dan topping lezat.',
     imageAsset: 'assets/images/waffle.jpeg',
   ),
   MenuItem(
-    id: 'cilok',
-    name: 'Cilok Mercon',
+    id: '24',
+    name: 'Cilok',
     category: 'Camilan',
-    price: 10000,
-    description:
-        'Cilok kenyal dengan isian dan cita rasa pedas.',
+    price: 8000,
+    description: 'Cilok kenyal dengan bumbu pelengkap yang gurih.',
     imageAsset: 'assets/images/cilok.jpeg',
   ),
 ];
 
-// ========================
-// FORMAT HARGA
-// ========================
-
 String formatRupiah(int amount) {
-  final digits = amount.toString();
+  final value = amount.toString();
   final buffer = StringBuffer();
 
-  for (int i = 0; i < digits.length; i++) {
-    buffer.write(digits[i]);
-
-    final remaining = digits.length - i - 1;
+  for (int i = 0; i < value.length; i++) {
+    buffer.write(value[i]);
+    final remaining = value.length - i - 1;
 
     if (remaining > 0 && remaining % 3 == 0) {
       buffer.write('.');
@@ -362,10 +290,6 @@ String formatRupiah(int amount) {
   return 'Rp$buffer';
 }
 
-// ========================
-// HALAMAN DAFTAR MENU
-// ========================
-
 class MenuListPage extends StatefulWidget {
   const MenuListPage({super.key});
 
@@ -374,39 +298,39 @@ class MenuListPage extends StatefulWidget {
 }
 
 class _MenuListPageState extends State<MenuListPage> {
-  final TextEditingController _searchController =
-      TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  final GlobalKey _menuSectionKey = GlobalKey();
 
-  String _category = 'Semua';
-  String _search = '';
+  String _selectedCategory = 'Semua';
+  String _searchQuery = '';
+  int _selectedNavIndex = 0;
 
-  final List<String> _categories = const [
+  final List<String> _categories = [
     'Semua',
     'Makanan',
     'Minuman',
     'Camilan',
   ];
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
   List<MenuItem> get _filteredMenus {
     return kantinMenus.where((item) {
-      final matchesCategory =
-          _category == 'Semua' || item.category == _category;
+      final matchesCategory = _selectedCategory == 'Semua' ||
+          item.category == _selectedCategory;
 
-      final query = _search.toLowerCase();
-
-      final matchesSearch =
-          item.name.toLowerCase().contains(query) ||
-          item.category.toLowerCase().contains(query) ||
+      final query = _searchQuery.toLowerCase();
+      final matchesSearch = item.name.toLowerCase().contains(query) ||
           item.description.toLowerCase().contains(query);
 
       return matchesCategory && matchesSearch;
     }).toList();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   void _openDetail(MenuItem item) {
@@ -420,331 +344,412 @@ class _MenuListPageState extends State<MenuListPage> {
   void _addToCart(MenuItem item) {
     KantinStore.instance.add(item);
 
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text('${item.name} ditambahkan ke keranjang'),
-          duration: const Duration(seconds: 1),
-          behavior: SnackBarBehavior.floating,
-          action: SnackBarAction(
-            label: 'Lihat',
-            onPressed: () {
-              Navigator.pushNamed(context, '/pesan');
-            },
-          ),
-        ),
-      );
-  }
-
-  Widget _buildHeader() {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20, 24, 20, 24),
-      decoration: BoxDecoration(
-        color: kForest,
-        borderRadius: BorderRadius.circular(24),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'KANTIN BU SARI',
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 12,
-              letterSpacing: 2,
-              fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'Makan enak,\nharga bersahabat.',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 27,
-              height: 1.2,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
-          const SizedBox(height: 10),
-          const Text(
-            'Temukan menu favoritmu untuk hari ini.',
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 13,
-            ),
-          ),
-          const SizedBox(height: 18),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 14,
-              vertical: 10,
-            ),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.restaurant_menu,
-                  color: Colors.white,
-                  size: 18,
-                ),
-                SizedBox(width: 8),
-                Text(
-                  'Pilihan makanan, minuman, dan camilan',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 11,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('${item.name} ditambahkan ke keranjang'),
+        duration: const Duration(seconds: 1),
+        backgroundColor: kForest,
       ),
     );
   }
 
-  Widget _buildSearchField() {
-    return TextField(
-      controller: _searchController,
-      onChanged: (value) {
+  void _goToHome() {
+    setState(() {
+      _selectedNavIndex = 0;
+    });
+
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 400),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _goToMenu() {
+    setState(() {
+      _selectedNavIndex = 1;
+      _selectedCategory = 'Semua';
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final menuContext = _menuSectionKey.currentContext;
+
+      if (menuContext != null && mounted) {
+        Scrollable.ensureVisible(
+          menuContext,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+          alignment: 0.02,
+        );
+      }
+    });
+  }
+
+  void _goToOrders() {
+    setState(() {
+      _selectedNavIndex = 2;
+    });
+
+    Navigator.pushNamed(context, '/pesan').then((_) {
+      if (mounted) {
         setState(() {
-          _search = value.trim();
+          _selectedNavIndex = 0;
         });
-      },
-      decoration: InputDecoration(
-        hintText: 'Cari menu yang kamu inginkan...',
-        prefixIcon: const Icon(Icons.search),
-        suffixIcon: _search.isNotEmpty
-            ? IconButton(
-                onPressed: () {
-                  _searchController.clear();
-
-                  setState(() {
-                    _search = '';
-                  });
-                },
-                icon: const Icon(Icons.close),
-              )
-            : null,
-      ),
-    );
+      }
+    });
   }
 
-  Widget _buildCategoryFilter() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: _categories.map((category) {
-          final selected = _category == category;
-
-          return Padding(
-            padding: const EdgeInsets.only(right: 8),
-            child: ChoiceChip(
-              label: Text(category),
-              selected: selected,
-              showCheckmark: false,
-              selectedColor: kForest,
-              backgroundColor: const Color(0xFFF0E9DB),
-              labelStyle: TextStyle(
-                color: selected ? Colors.white : kText,
-                fontWeight: FontWeight.w700,
-                fontSize: 12,
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: kCream,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFEAECE1),
+        foregroundColor: kForest,
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        toolbarHeight: 76,
+        titleSpacing: 20,
+        title: Row(
+          children: [
+            Container(
+              width: 58,
+              height: 58,
+              decoration: BoxDecoration(
+                color: kForest,
+                borderRadius: BorderRadius.circular(20),
               ),
-              onSelected: (_) {
-                setState(() {
-                  _category = category;
-                });
-              },
+              child: const Icon(
+                Icons.restaurant_menu,
+                color: Colors.white,
+                size: 30,
+              ),
             ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _buildMenuCard(MenuItem item) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      margin: EdgeInsets.zero,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 6,
-            child: Stack(
-              fit: StackFit.expand,
-              children: [
-                Image.asset(
-                  item.imageAsset,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, __, ___) {
-                    return Container(
-                      color: const Color(0xFFE7E1D4),
-                      child: const Center(
-                        child: Icon(
-                          Icons.restaurant,
-                          color: kForest,
-                          size: 42,
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                if (item.tag.isNotEmpty)
-                  Positioned(
-                    top: 8,
-                    left: 8,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 9,
-                        vertical: 5,
-                      ),
-                      decoration: BoxDecoration(
-                        color: kOrange,
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        item.tag,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 9,
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ),
-          Expanded(
-            flex: 5,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(10, 9, 10, 9),
+            const SizedBox(width: 14),
+            const Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item.category.toUpperCase(),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                    'Kantin Bu Sari',
+                    style: TextStyle(
+                      fontSize: 23,
+                      fontWeight: FontWeight.bold,
+                      color: kForest,
+                    ),
+                  ),
+                  SizedBox(height: 2),
+                  Text(
+                    'Enak, praktis, harga bersahabat',
+                    style: TextStyle(
+                      fontSize: 14,
                       color: kMuted,
-                      fontSize: 9,
-                      letterSpacing: 0.8,
-                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    item.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
+                ],
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          IconButton(
+            tooltip: 'Keranjang',
+            onPressed: _goToOrders,
+            icon: AnimatedBuilder(
+              animation: KantinStore.instance,
+              builder: (context, child) {
+                return Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    const Icon(
+                      Icons.shopping_bag_outlined,
+                      size: 29,
+                    ),
+                    if (KantinStore.instance.itemCount > 0)
+                      Positioned(
+                        right: -8,
+                        top: -8,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: kOrange,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Text(
+                            '${KantinStore.instance.itemCount}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                );
+              },
+            ),
+          ),
+          const SizedBox(width: 12),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildBanner(),
+                  const SizedBox(height: 28),
+                  const Text(
+                    'Rekomendasi Bu Sari',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                       color: kText,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const Spacer(),
-                  Text(
-                    formatRupiah(item.price),
-                    maxLines: 1,
-                    style: const TextStyle(
-                      color: kOrange,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: 6),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SizedBox(
-                          height: 34,
-                          child: OutlinedButton(
-                            onPressed: () => _openDetail(item),
-                            style: OutlinedButton.styleFrom(
-                              padding: EdgeInsets.zero,
-                              foregroundColor: kForest,
-                              side: const BorderSide(
-                                color: kForest,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
+                  const SizedBox(height: 18),
+                  _buildRecommendedMenus(),
+                  const SizedBox(height: 30),
+
+                  // Bagian tujuan navigasi tombol Menu.
+                  KeyedSubtree(
+                    key: _menuSectionKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Cari Menu',
+                          style: TextStyle(
+                            fontSize: 23,
+                            fontWeight: FontWeight.bold,
+                            color: kText,
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        TextField(
+                          controller: _searchController,
+                          onChanged: (value) {
+                            setState(() {
+                              _searchQuery = value;
+                            });
+                          },
+                          decoration: InputDecoration(
+                            hintText: 'Cari makanan atau minuman...',
+                            prefixIcon: const Icon(
+                              Icons.search,
+                              color: kForest,
                             ),
-                            child: const Text(
-                              'Detail',
-                              style: TextStyle(fontSize: 11),
+                            filled: true,
+                            fillColor: kCard,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              borderSide: BorderSide.none,
+                            ),
+                            contentPadding: const EdgeInsets.symmetric(
+                              vertical: 16,
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 6),
-                      SizedBox(
-                        width: 36,
-                        height: 34,
-                        child: ElevatedButton(
-                          onPressed: () => _addToCart(item),
-                          style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            backgroundColor: kOrange,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          child: const Icon(
-                            Icons.add_shopping_cart,
-                            size: 17,
+                        const SizedBox(height: 18),
+                        Wrap(
+                          spacing: 10,
+                          runSpacing: 10,
+                          children: _categories.map((category) {
+                            final selected =
+                                _selectedCategory == category;
+
+                            return ChoiceChip(
+                              label: Text(category),
+                              selected: selected,
+                              onSelected: (_) {
+                                setState(() {
+                                  _selectedCategory = category;
+                                });
+                              },
+                              selectedColor: kForest,
+                              backgroundColor: kCard,
+                              labelStyle: TextStyle(
+                                color:
+                                    selected ? Colors.white : kForest,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              side: BorderSide(
+                                color: selected
+                                    ? kForest
+                                    : kForest.withValues(alpha: 0.15),
+                              ),
+                              showCheckmark: false,
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 20),
+                        Text(
+                          _selectedCategory == 'Semua'
+                              ? 'Semua Menu'
+                              : _selectedCategory,
+                          style: const TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                            color: kText,
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 16),
+                        _buildMenuGrid(_filteredMenus),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
           ),
+          _buildBottomNavigation(),
         ],
       ),
     );
   }
 
-  Widget _buildMenuGrid() {
-    final menus = _filteredMenus;
+  Widget _buildBanner() {
+    return Container(
+      width: double.infinity,
+      height: 200,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: kForest,
+        borderRadius: BorderRadius.circular(26),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    'Nikmati Menu Kami!',
+                    style: TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    'Makanan lezat, dibuat dengan sepenuh hati.',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Color(0xFFD7E2DA),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  ElevatedButton(
+                    onPressed: _goToMenu,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kOrange,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                    ),
+                    child: const Text(
+                      'Lihat Menu  →',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: Image.asset(
+              'assets/images/nasigoreng.jpeg',
+              height: double.infinity,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: kForestDark,
+                  child: const Center(
+                    child: Icon(
+                      Icons.restaurant,
+                      color: Colors.white,
+                      size: 70,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
+  Widget _buildRecommendedMenus() {
+    final recommended = kantinMenus.take(4).toList();
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final width = constraints.maxWidth;
+        final crossAxisCount = width >= 1100
+            ? 4
+            : width >= 650
+                ? 2
+                : 1;
+
+        final aspectRatio = crossAxisCount == 4
+            ? 0.77
+            : crossAxisCount == 2
+                ? 0.85
+                : 1.25;
+
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: recommended.length,
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: aspectRatio,
+          ),
+          itemBuilder: (context, index) {
+            return _buildMenuCard(recommended[index]);
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildMenuGrid(List<MenuItem> menus) {
     if (menus.isEmpty) {
       return const Padding(
-        padding: EdgeInsets.symmetric(vertical: 48),
+        padding: EdgeInsets.symmetric(vertical: 40),
         child: Center(
           child: Column(
             children: [
               Icon(
                 Icons.search_off,
-                size: 48,
+                size: 54,
                 color: kMuted,
               ),
               SizedBox(height: 12),
               Text(
-                'Menu tidak ditemukan',
+                'Menu tidak ditemukan.',
                 style: TextStyle(
-                  color: kText,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-              SizedBox(height: 4),
-              Text(
-                'Coba kata kunci atau kategori lain.',
-                style: TextStyle(
+                  fontSize: 16,
                   color: kMuted,
-                  fontSize: 12,
                 ),
               ),
             ],
@@ -756,24 +761,21 @@ class _MenuListPageState extends State<MenuListPage> {
     return LayoutBuilder(
       builder: (context, constraints) {
         final width = constraints.maxWidth;
-
-        final columns = width >= 900
+        final crossAxisCount = width >= 1100
             ? 4
-            : width >= 600
+            : width >= 650
                 ? 3
                 : 2;
-
-        final ratio = width < 360 ? 0.57 : 0.64;
 
         return GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: menus.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: columns,
-            crossAxisSpacing: 12,
-            mainAxisSpacing: 12,
-            childAspectRatio: ratio,
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: 14,
+            mainAxisSpacing: 14,
+            childAspectRatio: width < 400 ? 0.57 : 0.68,
           ),
           itemBuilder: (context, index) {
             return _buildMenuCard(menus[index]);
@@ -783,138 +785,215 @@ class _MenuListPageState extends State<MenuListPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final store = KantinStore.instance;
-
-    return AnimatedBuilder(
-      animation: store,
-      builder: (context, _) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text(
-              'Kantin Bu Sari',
-              style: TextStyle(
-                fontWeight: FontWeight.w800,
-              ),
-            ),
-            actions: [
-              Padding(
-                padding: const EdgeInsets.only(right: 12),
-                child: Center(
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(14),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/pesan');
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 9,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFE7EFE7),
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.shopping_bag_outlined,
-                            color: kForest,
-                            size: 20,
-                          ),
-                          if (store.itemCount > 0) ...[
-                            const SizedBox(width: 6),
-                            Text(
-                              '${store.itemCount}',
-                              style: const TextStyle(
-                                color: kForest,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                          ],
-                        ],
+  Widget _buildMenuCard(MenuItem item) {
+    return Card(
+      color: kCard,
+      elevation: 1,
+      shadowColor: Colors.black.withValues(alpha: 0.05),
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+        side: const BorderSide(color: Color(0xFFECE7DC)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            flex: 5,
+            child: SizedBox(
+              width: double.infinity,
+              child: Image.asset(
+                item.imageAsset,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: const Color(0xFFEAECE1),
+                    child: const Center(
+                      child: Icon(
+                        Icons.restaurant,
+                        color: kForest,
+                        size: 48,
                       ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
-            ],
+            ),
           ),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+          Expanded(
+            flex: 5,
+            child: Padding(
+              padding: const EdgeInsets.all(12),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildHeader(),
-                  const SizedBox(height: 22),
-                  _buildSearchField(),
-                  const SizedBox(height: 18),
-                  const Text(
-                    'Kategori Menu',
-                    style: TextStyle(
-                      fontSize: 17,
-                      color: kForest,
-                      fontWeight: FontWeight.w800,
+                  Text(
+                    item.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: kText,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  _buildCategoryFilter(),
-                  const SizedBox(height: 22),
+                  const SizedBox(height: 6),
+                  Expanded(
+                    child: Text(
+                      item.description,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        height: 1.4,
+                        color: kMuted,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    formatRupiah(item.price),
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                      color: kOrange,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Expanded(
-                        child: Text(
-                          'Menu Pilihan',
-                          style: TextStyle(
-                            fontSize: 19,
-                            color: kForest,
-                            fontWeight: FontWeight.w800,
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () => _openDetail(item),
+                          style: OutlinedButton.styleFrom(
+                            foregroundColor: kForest,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 10,
+                            ),
+                            side: const BorderSide(color: kForest),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text(
+                            'Detail',
+                            style: TextStyle(fontSize: 12),
                           ),
                         ),
                       ),
-                      Text(
-                        '${_filteredMenus.length} menu',
-                        style: const TextStyle(
-                          color: kMuted,
-                          fontSize: 12,
+                      const SizedBox(width: 8),
+                      IconButton(
+                        tooltip: 'Tambah ke keranjang',
+                        onPressed: () => _addToCart(item),
+                        style: IconButton.styleFrom(
+                          backgroundColor: kForest,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ),
+                        icon: const Icon(
+                          Icons.add_shopping_cart,
+                          size: 19,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 12),
-                  _buildMenuGrid(),
                 ],
               ),
             ),
           ),
-          bottomNavigationBar: NavigationBar(
-            selectedIndex: 0,
-            onDestinationSelected: (index) {
-              if (index == 1) {
-                Navigator.pushNamed(context, '/pesan');
-              }
-            },
-            destinations: [
-              const NavigationDestination(
-                icon: Icon(Icons.restaurant_menu_outlined),
-                selectedIcon: Icon(Icons.restaurant_menu),
-                label: 'Menu',
-              ),
-              NavigationDestination(
-                icon: Badge(
-                  isLabelVisible: store.itemCount > 0,
-                  label: Text('${store.itemCount}'),
-                  child: const Icon(Icons.shopping_bag_outlined),
-                ),
-                selectedIcon: const Icon(Icons.shopping_bag),
-                label: 'Pesanan',
-              ),
-            ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomNavigation() {
+    return Container(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 10,
+      ),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        border: Border(
+          top: BorderSide(color: Color(0xFFECE7DC)),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          _buildNavItem(
+            icon: Icons.home_rounded,
+            label: 'Beranda',
+            selected: _selectedNavIndex == 0,
+            onTap: _goToHome,
           ),
-        );
-      },
+          _buildNavItem(
+            icon: Icons.restaurant_menu,
+            label: 'Menu',
+            selected: _selectedNavIndex == 1,
+            onTap: _goToMenu,
+          ),
+          _buildNavItem(
+            icon: Icons.receipt_long,
+            label: 'Pesanan',
+            selected: _selectedNavIndex == 2,
+            onTap: _goToOrders,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem({
+    required IconData icon,
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 12,
+          vertical: 4,
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 70,
+              height: 38,
+              decoration: BoxDecoration(
+                color: selected
+                    ? const Color(0xFFDCE9DF)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(22),
+              ),
+              child: Icon(
+                icon,
+                color: selected
+                    ? kForestDark
+                    : const Color(0xFF414B44),
+                size: 25,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 14,
+                color: selected ? kText : const Color(0xFF414B44),
+                fontWeight:
+                    selected ? FontWeight.w600 : FontWeight.normal,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

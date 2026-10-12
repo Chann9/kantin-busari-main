@@ -1,12 +1,11 @@
-// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
+import 'pages/menu_list_page.dart';
+import 'pages/menu_detail_page.dart';
+import 'pages/order_page.dart';
 
-// import 'pages/menu_list_page.dart';
-// import 'pages/menu_detail_page.dart';
-// import 'pages/order_page.dart';
-
-// void main() {
-//   runApp(const MyApp());
-// }
+void main() {
+  runApp(const MyApp());
+}
 
 // class MyApp extends StatelessWidget {
 //   const MyApp({super.key});
@@ -32,11 +31,7 @@
 //   }
 // }
 
-import 'package:flutter/material.dart';
 
-import 'pages/menu_list_page.dart';
-import 'pages/menu_detail_page.dart';
-import 'pages/order_page.dart';
 
 // Palet warna Modern & Natural
 const Color kForest = Color(0xFF174B38);
@@ -47,9 +42,7 @@ const Color kOrange = Color(0xFFD95732);
 const Color kText = Color(0xFF202720);
 const Color kMuted = Color(0xFF77786F);
 
-void main() {
-  runApp(const MyApp());
-}
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

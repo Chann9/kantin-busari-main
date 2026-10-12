@@ -13,9 +13,7 @@ class MenuDetailPage extends StatefulWidget {
 
 class _MenuDetailPageState extends State<MenuDetailPage> {
   int _quantity = 1;
-
-  final TextEditingController _noteController =
-      TextEditingController();
+  final TextEditingController _noteController = TextEditingController();
 
   @override
   void dispose() {
@@ -23,84 +21,27 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
     super.dispose();
   }
 
-  void _addToOrder(MenuItem item) {
-    final store = KantinStore.instance;
-
-    for (int i = 0; i < _quantity; i++) {
-      store.add(item);
-    }
-
-    final note = _noteController.text.trim();
-
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          content: Text(
-            '${item.name} ditambahkan ke keranjang.',
-          ),
-          duration: const Duration(seconds: 2),
-          behavior: SnackBarBehavior.floating,
-          action: SnackBarAction(
-            label: 'Lihat Pesanan',
-            onPressed: () {
-              Navigator.pushNamed(
-                context,
-                '/pesan',
-                arguments: note,
-              );
-            },
-          ),
-        ),
-      );
-
-    Navigator.pushNamed(
-      context,
-      '/pesan',
-      arguments: note,
-    );
-  }
-
-  Widget _quantityButton(
-    IconData icon,
-    VoidCallback? onPressed, {
-    bool filled = false,
-  }) {
-    return SizedBox(
-      width: 38,
-      height: 38,
-      child: IconButton(
-        onPressed: onPressed,
-        style: IconButton.styleFrom(
-          backgroundColor: filled
-              ? kOrange
-              : const Color(0xFFF0E9DB),
-          foregroundColor:
-              filled ? Colors.white : kForest,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(11),
-          ),
-        ),
-        icon: Icon(icon, size: 20),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    final argument =
-        ModalRoute.of(context)?.settings.arguments;
-
+    final argument = ModalRoute.of(context)?.settings.arguments;
     final MenuItem item =
         argument is MenuItem ? argument : kantinMenus.first;
 
+    final store = KantinStore.instance;
+
     return Scaffold(
+      backgroundColor: kCream,
       appBar: AppBar(
+        backgroundColor: const Color(0xFFEAECE1),
+        foregroundColor: kForest,
+        elevation: 0,
         title: const Text(
           'Detail Menu',
-          style: TextStyle(
-            fontWeight: FontWeight.w800,
-          ),
+          style: TextStyle(fontWeight: FontWeight.w800),
+        ),
+        leading: IconButton(
+          onPressed: () => Navigator.maybePop(context),
+          icon: const Icon(Icons.arrow_back_rounded),
         ),
       ),
       body: LayoutBuilder(
@@ -110,14 +51,13 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
           final content = SingleChildScrollView(
             padding: EdgeInsets.fromLTRB(
               wide ? 28 : 18,
-              10,
+              18,
               wide ? 28 : 18,
               28,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // GAMBAR MENU
                 ClipRRect(
                   borderRadius: BorderRadius.circular(24),
                   child: AspectRatio(
@@ -125,7 +65,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                     child: Image.asset(
                       item.imageAsset,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) {
+                      errorBuilder: (context, error, stackTrace) {
                         return Container(
                           color: const Color(0xFFE7E1D4),
                           child: const Center(
@@ -140,29 +80,23 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 22),
 
-                // NAMA DAN HARGA
                 Row(
-                  crossAxisAlignment:
-                      CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
                       child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding:
-                                const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 5,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
                             ),
                             decoration: BoxDecoration(
                               color: const Color(0xFFE4EDE4),
-                              borderRadius:
-                                  BorderRadius.circular(20),
+                              borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
                               item.category,
@@ -173,7 +107,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 12),
                           Text(
                             item.name,
                             style: const TextStyle(
@@ -199,29 +133,27 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
 
                 const SizedBox(height: 16),
 
-                // DESKRIPSI
-                const Text(
-                  'Deskripsi Menu',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: kForest,
-                  ),
-                ),
-                const SizedBox(height: 8),
+                // Deskripsi tanpa label favorit atau pedas.
                 Text(
                   item.description,
                   style: const TextStyle(
                     fontSize: 14,
-                    height: 1.6,
+                    height: 1.7,
                     color: kMuted,
                   ),
                 ),
 
                 const SizedBox(height: 24),
 
-                // JUMLAH PESANAN
                 Card(
+                  color: kCard,
+                  elevation: 0,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    side: const BorderSide(
+                      color: Color(0xFFECE7DC),
+                    ),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 14,
@@ -256,6 +188,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                               style: const TextStyle(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w800,
+                                color: kText,
                               ),
                             ),
                           ),
@@ -274,39 +207,60 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                   ),
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 22),
 
-                // CATATAN PESANAN
                 const Text(
-                  'Catatan untuk Penjual',
+                  'Catatan untuk penjual',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w800,
                     color: kText,
                   ),
                 ),
-                const SizedBox(height: 9),
+                const SizedBox(height: 10),
+
                 TextField(
                   controller: _noteController,
                   maxLines: 3,
-                  textCapitalization:
-                      TextCapitalization.sentences,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     hintText:
                         'Contoh: tidak pedas, sambal dipisah, tanpa bawang...',
-                    alignLabelWithHint: true,
+                    hintStyle: const TextStyle(
+                      color: kMuted,
+                      fontSize: 13,
+                    ),
+                    filled: true,
+                    fillColor: kCard,
+                    contentPadding: const EdgeInsets.all(16),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE5DED0),
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(
+                        color: Color(0xFFE5DED0),
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: const BorderSide(
+                        color: kForest,
+                        width: 1.5,
+                      ),
+                    ),
                   ),
                 ),
 
-                const SizedBox(height: 24),
+                const SizedBox(height: 26),
 
-                // TOTAL DAN TOMBOL PESAN
                 Row(
                   children: [
                     Expanded(
                       child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Total item ini',
@@ -315,11 +269,9 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                               fontSize: 12,
                             ),
                           ),
-                          const SizedBox(height: 3),
+                          const SizedBox(height: 5),
                           Text(
-                            formatRupiah(
-                              item.price * _quantity,
-                            ),
+                            formatRupiah(item.price * _quantity),
                             style: const TextStyle(
                               color: kForest,
                               fontSize: 20,
@@ -329,15 +281,43 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                         ],
                       ),
                     ),
+                    const SizedBox(width: 12),
                     Expanded(
                       flex: 2,
                       child: ElevatedButton.icon(
-                        onPressed: () => _addToOrder(item),
+                        onPressed: () {
+                          for (int i = 0; i < _quantity; i++) {
+                            store.add(item);
+                          }
+
+                          final note = _noteController.text.trim();
+
+                          Navigator.pushNamed(
+                            context,
+                            '/pesan',
+                            arguments: note,
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: kForest,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 16,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                        ),
                         icon: const Icon(
                           Icons.shopping_bag_outlined,
                         ),
                         label: const Text(
                           'Tambah ke Pesanan',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w700,
+                          ),
                         ),
                       ),
                     ),
@@ -350,9 +330,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
           if (wide) {
             return Center(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: 980,
-                ),
+                constraints: const BoxConstraints(maxWidth: 980),
                 child: content,
               ),
             );
@@ -360,6 +338,29 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
 
           return content;
         },
+      ),
+    );
+  }
+
+  Widget _quantityButton(
+    IconData icon,
+    VoidCallback? onPressed, {
+    bool filled = false,
+  }) {
+    return SizedBox(
+      width: 38,
+      height: 38,
+      child: IconButton(
+        onPressed: onPressed,
+        style: IconButton.styleFrom(
+          backgroundColor:
+              filled ? kOrange : const Color(0xFFF0E9DB),
+          foregroundColor: filled ? Colors.white : kForest,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(11),
+          ),
+        ),
+        icon: Icon(icon, size: 20),
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../main.dart';
 import 'menu_list_page.dart';
 
@@ -12,9 +11,7 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage> {
   final _formKey = GlobalKey<FormState>();
-
   final TextEditingController _nameController = TextEditingController();
-
   final TextEditingController _noteController = TextEditingController();
 
   bool _isCheckingOut = false;

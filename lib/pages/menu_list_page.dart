@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import '../main.dart';
 
@@ -33,16 +32,15 @@ class KantinStore extends ChangeNotifier {
   KantinStore._();
 
   static final KantinStore instance = KantinStore._();
-
   final Map<String, CartEntry> cart = {};
 
   int get itemCount =>
       cart.values.fold(0, (total, entry) => total + entry.quantity);
 
   int get subtotal => cart.values.fold(
-        0,
-        (total, entry) => total + entry.item.price * entry.quantity,
-      );
+    0,
+    (total, entry) => total + entry.item.price * entry.quantity,
+  );
 
   void add(MenuItem item) {
     if (cart.containsKey(item.id)) {
@@ -82,7 +80,7 @@ const List<MenuItem> kantinMenus = [
     category: 'Makanan',
     price: 25000,
     description:
-        'Nasi goreng gurih dengan udang, cumi, telur, dan sayuran segar.',
+        'Nasi goreng gurih dengan udang, cumi, telur, dan sayuran segar dengan rasa pedas yang pas',
     imageAsset: 'assets/images/nasigoreng.jpeg',
   ),
   MenuItem(
@@ -90,17 +88,16 @@ const List<MenuItem> kantinMenus = [
     name: 'Ayam Penyet',
     category: 'Makanan',
     price: 20000,
-    description:
-        'Ayam goreng empuk dengan sambal khas dan lalapan segar.',
+    description: 'Ayam goreng dengan sambal khas dan lalapan segar.',
     imageAsset: 'assets/images/ayampenyet.jpeg',
   ),
   MenuItem(
     id: '3',
-    name: 'Nasi Bakar Cumi',
+    name: 'Nasi Bakar Ayam',
     category: 'Makanan',
     price: 22000,
     description:
-        'Nasi berbumbu yang dibungkus daun pisang dan dibakar bersama cumi.',
+        'Nasi berbumbu yang dibungkus daun pisang dan dibakar bersama ayam.',
     imageAsset: 'assets/images/nasibakar.jpeg',
   ),
   MenuItem(
@@ -117,7 +114,7 @@ const List<MenuItem> kantinMenus = [
     name: 'Bakso',
     category: 'Makanan',
     price: 15000,
-    description: 'Bakso daging dengan kuah gurih, mi, dan pelengkap segar.',
+    description: 'Bakso daging dengan kuah gurih, mie, dan pelengkap lainnya.',
     imageAsset: 'assets/images/bakso.jpeg',
   ),
   MenuItem(
@@ -130,10 +127,10 @@ const List<MenuItem> kantinMenus = [
   ),
   MenuItem(
     id: '7',
-    name: 'Mi Ayam',
+    name: 'Mie Ayam',
     category: 'Makanan',
     price: 16000,
-    description: 'Mi kenyal dengan ayam berbumbu dan sayuran segar.',
+    description: 'Mie kenyal dengan ayam berbumbu dan sayuran segar.',
     imageAsset: 'assets/images/mieayam.jpeg',
   ),
   MenuItem(
@@ -165,7 +162,7 @@ const List<MenuItem> kantinMenus = [
     name: 'Matcha Latte',
     category: 'Minuman',
     price: 15000,
-    description: 'Perpaduan matcha dan susu dengan rasa lembut.',
+    description: 'Perpaduan matcha dan susu outside yang creamy dan lezat.',
     imageAsset: 'assets/images/matchalatte.jpeg',
   ),
   MenuItem(
@@ -286,7 +283,6 @@ String formatRupiah(int amount) {
       buffer.write('.');
     }
   }
-
   return 'Rp$buffer';
 }
 
@@ -306,20 +302,16 @@ class _MenuListPageState extends State<MenuListPage> {
   String _searchQuery = '';
   int _selectedNavIndex = 0;
 
-  final List<String> _categories = [
-    'Semua',
-    'Makanan',
-    'Minuman',
-    'Camilan',
-  ];
+  final List<String> _categories = ['Semua', 'Makanan', 'Minuman', 'Camilan'];
 
   List<MenuItem> get _filteredMenus {
     return kantinMenus.where((item) {
-      final matchesCategory = _selectedCategory == 'Semua' ||
-          item.category == _selectedCategory;
+      final matchesCategory =
+          _selectedCategory == 'Semua' || item.category == _selectedCategory;
 
       final query = _searchQuery.toLowerCase();
-      final matchesSearch = item.name.toLowerCase().contains(query) ||
+      final matchesSearch =
+          item.name.toLowerCase().contains(query) ||
           item.description.toLowerCase().contains(query);
 
       return matchesCategory && matchesSearch;
@@ -334,11 +326,7 @@ class _MenuListPageState extends State<MenuListPage> {
   }
 
   void _openDetail(MenuItem item) {
-    Navigator.pushNamed(
-      context,
-      '/detail',
-      arguments: item,
-    );
+    Navigator.pushNamed(context, '/detail', arguments: item);
   }
 
   void _addToCart(MenuItem item) {
@@ -441,10 +429,7 @@ class _MenuListPageState extends State<MenuListPage> {
                   SizedBox(height: 2),
                   Text(
                     'Enak, praktis, harga bersahabat',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: kMuted,
-                    ),
+                    style: TextStyle(fontSize: 14, color: kMuted),
                   ),
                 ],
               ),
@@ -461,10 +446,7 @@ class _MenuListPageState extends State<MenuListPage> {
                 return Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    const Icon(
-                      Icons.shopping_bag_outlined,
-                      size: 29,
-                    ),
+                    const Icon(Icons.shopping_bag_outlined, size: 29),
                     if (KantinStore.instance.itemCount > 0)
                       Positioned(
                         right: -8,
@@ -516,7 +498,7 @@ class _MenuListPageState extends State<MenuListPage> {
                   _buildRecommendedMenus(),
                   const SizedBox(height: 30),
 
-                  // Bagian tujuan navigasi tombol Menu.
+                  // Navigasi tombol Menu.
                   KeyedSubtree(
                     key: _menuSectionKey,
                     child: Column(
@@ -539,7 +521,7 @@ class _MenuListPageState extends State<MenuListPage> {
                             });
                           },
                           decoration: InputDecoration(
-                            hintText: 'Cari makanan atau minuman...',
+                            hintText: 'Cari makanan atau minuman',
                             prefixIcon: const Icon(
                               Icons.search,
                               color: kForest,
@@ -560,8 +542,7 @@ class _MenuListPageState extends State<MenuListPage> {
                           spacing: 10,
                           runSpacing: 10,
                           children: _categories.map((category) {
-                            final selected =
-                                _selectedCategory == category;
+                            final selected = _selectedCategory == category;
 
                             return ChoiceChip(
                               label: Text(category),
@@ -574,8 +555,7 @@ class _MenuListPageState extends State<MenuListPage> {
                               selectedColor: kForest,
                               backgroundColor: kCard,
                               labelStyle: TextStyle(
-                                color:
-                                    selected ? Colors.white : kForest,
+                                color: selected ? Colors.white : kForest,
                                 fontWeight: FontWeight.w600,
                               ),
                               side: BorderSide(
@@ -643,10 +623,7 @@ class _MenuListPageState extends State<MenuListPage> {
                   const SizedBox(height: 8),
                   const Text(
                     'Makanan lezat, dibuat dengan sepenuh hati.',
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: Color(0xFFD7E2DA),
-                    ),
+                    style: TextStyle(fontSize: 15, color: Color(0xFFD7E2DA)),
                   ),
                   const SizedBox(height: 14),
                   ElevatedButton(
@@ -705,14 +682,14 @@ class _MenuListPageState extends State<MenuListPage> {
         final crossAxisCount = width >= 1100
             ? 4
             : width >= 650
-                ? 2
-                : 1;
+            ? 2
+            : 1;
 
         final aspectRatio = crossAxisCount == 4
             ? 0.77
             : crossAxisCount == 2
-                ? 0.85
-                : 1.25;
+            ? 0.85
+            : 1.25;
 
         return GridView.builder(
           shrinkWrap: true,
@@ -739,18 +716,11 @@ class _MenuListPageState extends State<MenuListPage> {
         child: Center(
           child: Column(
             children: [
-              Icon(
-                Icons.search_off,
-                size: 54,
-                color: kMuted,
-              ),
+              Icon(Icons.search_off, size: 54, color: kMuted),
               SizedBox(height: 12),
               Text(
                 'Menu tidak ditemukan.',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: kMuted,
-                ),
+                style: TextStyle(fontSize: 16, color: kMuted),
               ),
             ],
           ),
@@ -764,8 +734,8 @@ class _MenuListPageState extends State<MenuListPage> {
         final crossAxisCount = width >= 1100
             ? 4
             : width >= 650
-                ? 3
-                : 2;
+            ? 3
+            : 2;
 
         return GridView.builder(
           shrinkWrap: true,
@@ -809,11 +779,7 @@ class _MenuListPageState extends State<MenuListPage> {
                   return Container(
                     color: const Color(0xFFEAECE1),
                     child: const Center(
-                      child: Icon(
-                        Icons.restaurant,
-                        color: kForest,
-                        size: 48,
-                      ),
+                      child: Icon(Icons.restaurant, color: kForest, size: 48),
                     ),
                   );
                 },
@@ -893,10 +859,7 @@ class _MenuListPageState extends State<MenuListPage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        icon: const Icon(
-                          Icons.add_shopping_cart,
-                          size: 19,
-                        ),
+                        icon: const Icon(Icons.add_shopping_cart, size: 19),
                       ),
                     ],
                   ),
@@ -911,15 +874,10 @@ class _MenuListPageState extends State<MenuListPage> {
 
   Widget _buildBottomNavigation() {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 20,
-        vertical: 10,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(color: Color(0xFFECE7DC)),
-        ),
+        border: Border(top: BorderSide(color: Color(0xFFECE7DC))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -957,10 +915,7 @@ class _MenuListPageState extends State<MenuListPage> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 4,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -968,16 +923,12 @@ class _MenuListPageState extends State<MenuListPage> {
               width: 70,
               height: 38,
               decoration: BoxDecoration(
-                color: selected
-                    ? const Color(0xFFDCE9DF)
-                    : Colors.transparent,
+                color: selected ? const Color(0xFFDCE9DF) : Colors.transparent,
                 borderRadius: BorderRadius.circular(22),
               ),
               child: Icon(
                 icon,
-                color: selected
-                    ? kForestDark
-                    : const Color(0xFF414B44),
+                color: selected ? kForestDark : const Color(0xFF414B44),
                 size: 25,
               ),
             ),
@@ -987,8 +938,7 @@ class _MenuListPageState extends State<MenuListPage> {
               style: TextStyle(
                 fontSize: 14,
                 color: selected ? kText : const Color(0xFF414B44),
-                fontWeight:
-                    selected ? FontWeight.w600 : FontWeight.normal,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.normal,
               ),
             ),
           ],

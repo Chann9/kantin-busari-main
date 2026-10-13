@@ -1,6 +1,4 @@
-
 import 'package:flutter/material.dart';
-
 import '../main.dart';
 import 'menu_list_page.dart';
 
@@ -24,8 +22,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
   @override
   Widget build(BuildContext context) {
     final argument = ModalRoute.of(context)?.settings.arguments;
-    final MenuItem item =
-        argument is MenuItem ? argument : kantinMenus.first;
+    final MenuItem item = argument is MenuItem ? argument : kantinMenus.first;
 
     final store = KantinStore.instance;
 
@@ -133,7 +130,6 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
 
                 const SizedBox(height: 16),
 
-                // Deskripsi tanpa label favorit atau pedas.
                 Text(
                   item.description,
                   style: const TextStyle(
@@ -150,9 +146,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
-                    side: const BorderSide(
-                      color: Color(0xFFECE7DC),
-                    ),
+                    side: const BorderSide(color: Color(0xFFECE7DC)),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
@@ -193,15 +187,11 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                             ),
                           ),
                         ),
-                        _quantityButton(
-                          Icons.add,
-                          () {
-                            setState(() {
-                              _quantity++;
-                            });
-                          },
-                          filled: true,
-                        ),
+                        _quantityButton(Icons.add, () {
+                          setState(() {
+                            _quantity++;
+                          });
+                        }, filled: true),
                       ],
                     ),
                   ),
@@ -225,31 +215,21 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                   decoration: InputDecoration(
                     hintText:
                         'Contoh: tidak pedas, sambal dipisah, tanpa bawang...',
-                    hintStyle: const TextStyle(
-                      color: kMuted,
-                      fontSize: 13,
-                    ),
+                    hintStyle: const TextStyle(color: kMuted, fontSize: 13),
                     filled: true,
                     fillColor: kCard,
                     contentPadding: const EdgeInsets.all(16),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: const BorderSide(
-                        color: Color(0xFFE5DED0),
-                      ),
+                      borderSide: const BorderSide(color: Color(0xFFE5DED0)),
                     ),
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: const BorderSide(
-                        color: Color(0xFFE5DED0),
-                      ),
+                      borderSide: const BorderSide(color: Color(0xFFE5DED0)),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16),
-                      borderSide: const BorderSide(
-                        color: kForest,
-                        width: 1.5,
-                      ),
+                      borderSide: const BorderSide(color: kForest, width: 1.5),
                     ),
                   ),
                 ),
@@ -264,10 +244,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                         children: [
                           const Text(
                             'Total item ini',
-                            style: TextStyle(
-                              color: kMuted,
-                              fontSize: 12,
-                            ),
+                            style: TextStyle(color: kMuted, fontSize: 12),
                           ),
                           const SizedBox(height: 5),
                           Text(
@@ -309,15 +286,11 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
-                        icon: const Icon(
-                          Icons.shopping_bag_outlined,
-                        ),
+                        icon: const Icon(Icons.shopping_bag_outlined),
                         label: const Text(
                           'Tambah ke Pesanan',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: TextStyle(fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),
@@ -353,8 +326,7 @@ class _MenuDetailPageState extends State<MenuDetailPage> {
       child: IconButton(
         onPressed: onPressed,
         style: IconButton.styleFrom(
-          backgroundColor:
-              filled ? kOrange : const Color(0xFFF0E9DB),
+          backgroundColor: filled ? kOrange : const Color(0xFFF0E9DB),
           foregroundColor: filled ? Colors.white : kForest,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(11),

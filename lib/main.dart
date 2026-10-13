@@ -7,33 +7,6 @@ void main() {
   runApp(const MyApp());
 }
 
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Kantin Bu Sari',
-//       debugShowCheckedModeBanner: false,
-//       theme: ThemeData(
-//         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-//         useMaterial3: true,
-//       ),
-
-//       // Best practice: daftarkan semua route di satu tempat
-//       initialRoute: '/',
-//       routes: {
-//         '/': (context) => const MenuListPage(),
-//         '/detail': (context) => const MenuDetailPage(),
-//         '/pesan': (context) => const OrderPage(),
-//       },
-//     );
-//   }
-// }
-
-
-
-// Palet warna Modern & Natural
 const Color kForest = Color(0xFF174B38);
 const Color kForestDark = Color(0xFF103728);
 const Color kCream = Color(0xFFFAF6EC);
@@ -41,8 +14,6 @@ const Color kCard = Color(0xFFFFFEFA);
 const Color kOrange = Color(0xFFD95732);
 const Color kText = Color(0xFF202720);
 const Color kMuted = Color(0xFF77786F);
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -78,9 +49,7 @@ class MyApp extends StatelessWidget {
           margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
-            side: const BorderSide(
-              color: Color(0xFFEDE6D8),
-            ),
+            side: const BorderSide(color: Color(0xFFEDE6D8)),
           ),
         ),
 
@@ -101,10 +70,7 @@ class MyApp extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: const BorderSide(
-              color: kForest,
-              width: 1.5,
-            ),
+            borderSide: const BorderSide(color: kForest, width: 1.5),
           ),
         ),
 
@@ -113,16 +79,11 @@ class MyApp extends StatelessWidget {
             backgroundColor: kOrange,
             foregroundColor: Colors.white,
             elevation: 0,
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20,
-              vertical: 15,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
             ),
-            textStyle: const TextStyle(
-              fontWeight: FontWeight.w700,
-            ),
+            textStyle: const TextStyle(fontWeight: FontWeight.w700),
           ),
         ),
 
@@ -130,10 +91,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: const Color(0xFFF0E9DB),
           selectedColor: kForest,
           labelStyle: const TextStyle(fontSize: 13),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 7,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(24),
           ),
